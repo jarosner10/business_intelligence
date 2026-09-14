@@ -4,11 +4,11 @@ author: "Jesse Rosner"
 date: "2026-09-09"
 output: 
   html_document:
-    toc: true
-    toc_float: true
-    numbered-sections: true
+    toc: TRUE
+    toc_float: TRUE
+    numbered-sections: TRUE
     code_folding: show
-    code_download: true
+    code_download: TRUE
 ---
 
 ```{r setup, include=FALSE}

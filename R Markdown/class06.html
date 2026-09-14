@@ -11,9 +11,9 @@
 
 <meta name="author" content="Jesse Rosner" />
 
-<meta name="date" content="2026-09-09" />
+<meta name="date" content="2026-09-14" />
 
-<title>Class 05</title>
+<title>Class 06</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1587,246 +1587,55 @@ border-radius: 0px;
 
 
 
-<h1 class="title toc-ignore">Class 05</h1>
+<h1 class="title toc-ignore">Class 06</h1>
 <h4 class="author">Jesse Rosner</h4>
-<h4 class="date">2026-09-09</h4>
+<h4 class="date">2026-09-14</h4>
 
 </div>
 
 
-<div id="fgame-01-find-your-seat" class="section level2">
-<h2>FGame 01: Find Your Seat</h2>
-<pre class="r"><code>campus = jsonlite::fromJSON(
-  &quot;https://isa401-find-your-seat.vercel.app/campus.json&quot;)
-
-dplyr::glimpse(campus)</code></pre>
-<pre><code>## List of 6
-##  $ briefing: chr &quot;You are holding Miami University&#39;s campus as one R object: this briefing plus five very different places, so it&quot;| __truncated__
-##  $ Yager   :List of 6
-##   ..$ name            : chr &quot;Yager Stadium&quot;
-##   ..$ full_name       : chr &quot;Fred C. Yager Stadium&quot;
-##   ..$ sport           : chr &quot;Football&quot;
-##   ..$ opened          : int 1983
-##   ..$ seating_capacity: int 24286
-##   ..$ source          :List of 2
-##   .. ..$ url     : chr &quot;https://miamiredhawks.com/facilities/yager-stadium/20&quot;
-##   .. ..$ accessed: chr &quot;2026-09-02&quot;
-##  $ Millett :List of 7
-##   ..$ name                             : chr &quot;Millett Hall&quot;
-##   ..$ full_name                        : chr &quot;John D. Millett Hall&quot;
-##   ..$ sports                           : chr [1:3] &quot;Men&#39;s basketball&quot; &quot;Women&#39;s basketball&quot; &quot;Volleyball&quot;
-##   ..$ opened                           : chr &quot;December 2, 1968&quot;
-##   ..$ seating_capacity                 : int 9200
-##   ..$ basketball_configuration_capacity: int 6400
-##   ..$ source                           :List of 2
-##   .. ..$ url     : chr &quot;https://miamiredhawks.com/facilities/millett-hall/15&quot;
-##   .. ..$ accessed: chr &quot;2026-09-02&quot;
-##  $ Upham   :List of 4
-##   ..$ name          : chr &quot;Upham Hall&quot;
-##   ..$ what_it_is    : chr &quot;Academic building at the center of campus that houses the College of Arts and Science (the College&#39;s address is&quot;| __truncated__
-##   ..$ arch_tradition: chr &quot;Miami legend holds that if you kiss your true love under the Upham Hall Arch, you will marry and the bond will &quot;| __truncated__
-##   ..$ arch_source   :List of 2
-##   .. ..$ url     : chr &quot;https://miamioh.edu/about-miami/history-traditions/traditions/&quot;
-##   .. ..$ accessed: chr &quot;2026-09-02&quot;
-##  $ Farmer  :List of 8
-##   ..$ name        : chr &quot;Farmer School of Business&quot;
-##   ..$ code        : chr &quot;MUFSB&quot;
-##   ..$ address     : chr &quot;800 East High Street, Oxford, OH 45056&quot;
-##   ..$ opened      : int 2009
-##   ..$ source      :List of 2
-##   .. ..$ url     : chr &quot;https://miamioh.edu/fsb/about/index.html&quot;
-##   .. ..$ accessed: chr &quot;2026-09-02&quot;
-##   ..$ photo_credit: chr &quot;Jay Murdock, Farmer School of Business&quot;
-##   ..$ rooms_source: chr &quot;isa_sections: Miami University course export of Fall 2026 ISA sections (term 202710), file dated 2026-09-02. al&quot;| __truncated__
-##   ..$ floors      :List of 4
-##   .. ..$ 0:List of 4
-##   .. ..$ 1:List of 4
-##   .. ..$ 2:List of 5
-##   .. ..$ 3:List of 4
-##  $ King    :List of 4
-##   ..$ name          : chr &quot;King Library&quot;
-##   ..$ what_it_is    : chr &quot;The flagship of the Miami University Libraries and the scholarly hub of Oxford campus life.&quot;
-##   ..$ street_address: chr &quot;151 S. Campus Ave, Oxford, OH 45056&quot;
-##   ..$ source        :List of 2
-##   .. ..$ url     : chr &quot;https://www.lib.miamioh.edu/about/locations/king-library/&quot;
-##   .. ..$ accessed: chr &quot;2026-09-02&quot;</code></pre>
-<pre class="r"><code>fsb = campus[[&quot;Farmer&quot;]] # campus$Farmer; or campus[[5]]
-fsb$code</code></pre>
-<pre><code>## [1] &quot;MUFSB&quot;</code></pre>
-<pre class="r"><code>sec_floor = fsb$floors[[&#39;2&#39;]]
-sec_floor$sections</code></pre>
-<pre><code>## [1] 80</code></pre>
-<pre class="r"><code>#equivalent
-fsb$floors[[3]]$sections</code></pre>
-<pre><code>## [1] 80</code></pre>
-<pre class="r"><code>df = sec_floor$rooms
-df</code></pre>
-<pre><code>##   room isa_sections all_sections all_subjects
-## 1 2037           10           12            2
-## 2 2040            0           12            1
-## 3 2041            0           13            2
-## 4 2046            0           16            2
-## 5 2049            0           16            3
-## 6 2050           11           11            1</code></pre>
-<p>#Reading Excel File</p>
-<pre class="r"><code>occupation = readxl::read_excel(
-  path = &quot;M:/ISA 401/Repos/business_intelligence/Data/occupation.xlsx&quot;, sheet = &quot;Table 1.4&quot;, skip = 1
-  )
-
-
-#optional: clean the bottom three rows
-occupation = occupation[1:31, ]</code></pre>
-<p>#Json Data</p>
-<pre class="r"><code>json_url = &quot;https://data.cincinnati-oh.gov/resource/rvmt-pkmq.json?$limit=100&quot;
-
-crashes_json = jsonlite::fromJSON(json_url)
-
-dplyr::glimpse(crashes_json)</code></pre>
-<pre><code>## Rows: 100
-## Columns: 27
-## $ address_x                      &lt;chr&gt; &quot;23XX BOUDINOT AV&quot;, &quot;23XX BOUDINOT AV&quot;,…
-## $ latitude_x                     &lt;chr&gt; &quot;39.129831&quot;, &quot;39.129261&quot;, &quot;39.151352&quot;, …
-## $ longitude_x                    &lt;chr&gt; &quot;-84.605731&quot;, &quot;-84.605631&quot;, &quot;-84.428211…
-## $ age                            &lt;chr&gt; &quot;20&quot;, &quot;48&quot;, &quot;38&quot;, NA, &quot;27&quot;, NA, &quot;83&quot;, N…
-## $ community_council_neighborhood &lt;chr&gt; &quot;WESTWOOD&quot;, &quot;WESTWOOD&quot;, &quot;OAKLEY&quot;, &quot;MOUN…
-## $ cpd_neighborhood               &lt;chr&gt; &quot;WESTWOOD&quot;, &quot;WESTWOOD&quot;, &quot;OAKLEY&quot;, &quot;MOUN…
-## $ sna_neighborhood               &lt;chr&gt; &quot;WESTWOOD&quot;, &quot;WESTWOOD&quot;, &quot;OAKLEY&quot;, &quot;MT. …
-## $ crashdate                      &lt;chr&gt; &quot;2026-08-22T22:29:00.000&quot;, &quot;2026-08-22T…
-## $ crashseverity                  &lt;chr&gt; &quot;3 - MINOR INJURY SUSPECTED&quot;, &quot;3 - MINO…
-## $ crashseverityid                &lt;chr&gt; &quot;201903&quot;, &quot;201903&quot;, &quot;201905&quot;, &quot;201905&quot;,…
-## $ datecrashreported              &lt;chr&gt; &quot;2026-08-22T22:29:00.000&quot;, &quot;2026-08-22T…
-## $ dayofweek                      &lt;chr&gt; &quot;SAT&quot;, &quot;SAT&quot;, &quot;SAT&quot;, &quot;SAT&quot;, &quot;SAT&quot;, &quot;SAT…
-## $ gender                         &lt;chr&gt; &quot;F - FEMALE&quot;, &quot;F - FEMALE&quot;, &quot;F - FEMALE…
-## $ injuries                       &lt;chr&gt; &quot;3 - SUSPECTED MINOR INJURY&quot;, &quot;5 - NO A…
-## $ instanceid                     &lt;chr&gt; &quot;843C33C9-31F6-4A44-B376-CB23D9ACB9C3&quot;,…
-## $ lightconditionsprimary         &lt;chr&gt; &quot;3 - DARK - LIGHTED ROADWAY&quot;, &quot;3 - DARK…
-## $ localreportno                  &lt;chr&gt; &quot;265009260&quot;, &quot;265009260&quot;, &quot;265009258&quot;, …
-## $ mannerofcrash                  &lt;chr&gt; &quot;6 - ANGLE&quot;, &quot;6 - ANGLE&quot;, &quot;6 - ANGLE&quot;, …
-## $ roadconditionsprimary          &lt;chr&gt; &quot;01 - DRY&quot;, &quot;01 - DRY&quot;, &quot;01 - DRY&quot;, &quot;01…
-## $ roadcontour                    &lt;chr&gt; &quot;1 - STRAIGHT LEVEL&quot;, &quot;1 - STRAIGHT LEV…
-## $ roadsurface                    &lt;chr&gt; &quot;2 - BLACKTOP, BITUMINOUS, ASPHALT&quot;, &quot;2…
-## $ roadclass                      &lt;chr&gt; &quot;3&quot;, &quot;3&quot;, NA, &quot;5&quot;, &quot;4&quot;, &quot;4&quot;, NA, NA, &quot;5…
-## $ roadclassdesc                  &lt;chr&gt; &quot;Minor Arterial Roads&quot;, &quot;Minor Arterial…
-## $ unittype                       &lt;chr&gt; &quot;01 - PASSENGER CAR&quot;, &quot;01 - PASSENGER C…
-## $ typeofperson                   &lt;chr&gt; &quot;D - DRIVER&quot;, &quot;D - DRIVER&quot;, &quot;D - DRIVER…
-## $ weather                        &lt;chr&gt; &quot;1 - CLEAR&quot;, &quot;1 - CLEAR&quot;, &quot;1 - CLEAR&quot;, …
-## $ zip                            &lt;chr&gt; &quot;45238&quot;, &quot;45238&quot;, &quot;45209&quot;, &quot;45219&quot;, &quot;45…</code></pre>
-</div>
-<div id="import-data-game" class="section level1">
-<h1>Import Data Game</h1>
-<pre class="r"><code>logins = readr::read_csv(&quot;https://isa401-import-heist.vercel.app/api/stage1?seat=R1-3&amp;s=A&quot;)</code></pre>
-<pre><code>## Rows: 7 Columns: 6
+<p>##kahoot 02</p>
+<pre class="r"><code>run = readr::read_csv(
+  &quot;https://isa401-find-your-seat.vercel.app/api/export?section=A&amp;run=13&quot;)</code></pre>
+<pre><code>## Rows: 157 Columns: 10
 ## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
-## chr  (4): account, country, source_ip, mfa
-## dbl  (1): failed_attempts
-## dttm (1): sign_in_time
+## chr  (5): section, track, seat, table, level_name
+## dbl  (4): run, level, seconds, rank
+## dttm (1): reached_at
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>logins$failed_attempts</code></pre>
-<pre><code>## [1]  0  1  0  2  0 17  1</code></pre>
-<pre class="r"><code>logins$account</code></pre>
-<pre><code>## [1] &quot;hallm7&quot;   &quot;patelr2&quot;  &quot;chenw4&quot;   &quot;oconnork&quot; &quot;nguyent9&quot; &quot;smithj31&quot; &quot;garciad5&quot;</code></pre>
-<pre class="r"><code>#Account with most sign-ins is smithj31
+<pre class="r"><code>dplyr::glimpse(run)</code></pre>
+<pre><code>## Rows: 157
+## Columns: 10
+## $ section    &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;,…
+## $ run        &lt;dbl&gt; 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,…
+## $ track      &lt;chr&gt; &quot;opener&quot;, &quot;opener&quot;, &quot;opener&quot;, &quot;opener&quot;, &quot;opener&quot;, &quot;opener&quot;,…
+## $ seat       &lt;chr&gt; &quot;R2-5&quot;, &quot;L1-2&quot;, &quot;L2-3&quot;, &quot;R3-6&quot;, &quot;L2-2&quot;, &quot;R1-1&quot;, &quot;L1-7&quot;, &quot;R3…
+## $ table      &lt;chr&gt; &quot;R2&quot;, &quot;L1&quot;, &quot;L2&quot;, &quot;R3&quot;, &quot;L2&quot;, &quot;R1&quot;, &quot;L1&quot;, &quot;R3&quot;, &quot;L3&quot;, &quot;R1&quot;,…
+## $ level      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ level_name &lt;chr&gt; &quot;seat picked&quot;, &quot;seat picked&quot;, &quot;seat picked&quot;, &quot;seat picked&quot;,…
+## $ reached_at &lt;dttm&gt; 2026-09-09 12:26:18, 2026-09-09 12:35:06, 2026-09-09 12:35…
+## $ seconds    &lt;dbl&gt; 0, 529, 534, 540, 541, 547, 548, 550, 550, 551, 552, 554, 5…
+## $ rank       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…</code></pre>
+<pre class="r"><code>con = DBI::dbConnect(RSQLite::SQLite(),
+                     &quot;M:/ISA 401/Repos/business_intelligence/Data/scout.db&quot;)
+DBI::dbListTables(con)</code></pre>
+<pre><code>## [1] &quot;scout_postings&quot; &quot;scout_runs&quot;</code></pre>
+<pre class="r"><code>postings = DBI::dbReadTable(con, &quot;scout_postings&quot;)
+DBI::dbDisconnect(con)
+dplyr::glimpse(postings[, c(&quot;title&quot;, &quot;company&quot;,
+  &quot;location_state&quot;, &quot;remote&quot;, &quot;skills_json&quot;)])</code></pre>
+<pre><code>## Rows: 1,891
+## Columns: 5
+## $ title          &lt;chr&gt; &quot;Data Analyst - Remote&quot;, &quot;Business Analyst / Product Ow…
+## $ company        &lt;chr&gt; &quot;UnitedHealth Group&quot;, &quot;Anza Mortgage Insurance Corporat…
+## $ location_state &lt;chr&gt; &quot;GA&quot;, &quot;NC&quot;, &quot;TX&quot;, &quot;CA&quot;, &quot;TX&quot;, &quot;NC&quot;, &quot;IL&quot;, &quot;GA&quot;, &quot;IN&quot;, &quot;…
+## $ remote         &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0…
+## $ skills_json    &lt;chr&gt; &quot;[{\&quot;skillId\&quot;:\&quot;sql\&quot;,\&quot;importance\&quot;:\&quot;required\&quot;},{\&quot;…</code></pre>
 
-log = jsonlite::fromJSON(&quot;https://isa401-import-heist.vercel.app/api/stage2?key=smithj31&amp;seat=R1-3&amp;s=A&quot;)
-
-dplyr::glimpse(log)</code></pre>
-<pre><code>## List of 5
-##  $ status  : chr &quot;UNLOCKED&quot;
-##  $ account : chr &quot;smithj31&quot;
-##  $ briefing: chr &quot;Everything smithj31 touched on the FSB shared drive between the 02:31 sign-in and the end of the session. The e&quot;| __truncated__
-##  $ session :List of 6
-##   ..$ start         : chr &quot;02:31&quot;
-##   ..$ end           : chr &quot;02:58&quot;
-##   ..$ source_country: chr &quot;Romania&quot;
-##   ..$ source_ip     : chr &quot;203.0.113.57&quot;
-##   ..$ vpn_gateway_ip: chr &quot;198.51.100.10&quot;
-##   ..$ mfa           : chr &quot;no&quot;
-##  $ events  :&#39;data.frame&#39;:    16 obs. of  5 variables:
-##   ..$ event  : int [1:16] 1 2 3 4 5 6 7 8 9 10 ...
-##   ..$ time   : chr [1:16] &quot;02:32&quot; &quot;02:33&quot; &quot;02:35&quot; &quot;02:37&quot; ...
-##   ..$ file   : chr [1:16] &quot;fsb_shared/README.txt&quot; &quot;fsb_shared/dept_directory.xlsx&quot; &quot;fsb_shared/dept_directory.xlsx&quot; &quot;fsb_shared/finance/budget_fy26.xlsx&quot; ...
-##   ..$ action : chr [1:16] &quot;VIEW&quot; &quot;VIEW&quot; &quot;DOWNLOAD&quot; &quot;VIEW&quot; ...
-##   ..$ size_mb: num [1:16] 0.01 0.4 0.4 2.1 2.1 5.6 0.2 1.3 1.3 0.3 ...</code></pre>
-<pre class="r"><code>log$events</code></pre>
-<pre><code>##    event  time                                         file    action size_mb
-## 1      1 02:32                        fsb_shared/README.txt      VIEW    0.01
-## 2      2 02:33               fsb_shared/dept_directory.xlsx      VIEW    0.40
-## 3      3 02:35               fsb_shared/dept_directory.xlsx  DOWNLOAD    0.40
-## 4      4 02:37          fsb_shared/finance/budget_fy26.xlsx      VIEW    2.10
-## 5      5 02:38          fsb_shared/finance/budget_fy26.xlsx  DOWNLOAD    2.10
-## 6      6 02:40     fsb_shared/finance/payroll_fall2026.xlsx  DOWNLOAD    5.60
-## 7      7 02:42      fsb_shared/hr/onboarding_checklist.docx      VIEW    0.20
-## 8      8 02:44            fsb_shared/hr/employee_roster.csv      VIEW    1.30
-## 9      9 02:45            fsb_shared/hr/employee_roster.csv  DOWNLOAD    1.30
-## 10    10 02:47   fsb_shared/isa/isa401_grades_fall2026.xlsx      VIEW    0.30
-## 11    11 02:48   fsb_shared/isa/isa401_grades_fall2026.xlsx  DOWNLOAD    0.30
-## 12    12 02:50 fsb_shared/research/survey_responses_pii.csv      VIEW   18.40
-## 13    13 02:52 fsb_shared/research/survey_responses_pii.csv  DOWNLOAD   18.40
-## 14    14 02:54    fsb_shared/marketing/brand_guidelines.pdf      VIEW    6.00
-## 15    15 02:56            fsb_shared/it/vpn_setup_guide.pdf      VIEW    0.90
-## 16    16 02:57                        fsb_shared/README.txt OVERWRITE    0.01</code></pre>
-<pre class="r"><code>#there are 6 download events
-
-jsonlite::fromJSON(&quot;https://isa401-import-heist.vercel.app/api/finish?code=6&amp;seat=R1-3&amp;s=A&quot;)</code></pre>
-<pre><code>## $status
-## [1] &quot;CLEARED&quot;
-## 
-## $verdict
-## [1] &quot;Account smithj31 was compromised by password guessing (17 failed attempts, then a successful sign-in from Romania at 02:31 without MFA). In the next 27 minutes, 6 files (28.1 MB) were downloaded from the FSB shared drive, including payroll, an employee roster, and survey responses with PII, and fsb_shared/README.txt was overwritten at 02:57 (restored from the drive&#39;s version history).&quot;
-## 
-## $report
-## $report$incident
-## [1] &quot;INC-2026-0902&quot;
-## 
-## $report$compromised_account
-## [1] &quot;smithj31&quot;
-## 
-## $report$attack
-## [1] &quot;password guessing (17 failed attempts before success)&quot;
-## 
-## $report$source_country
-## [1] &quot;Romania&quot;
-## 
-## $report$source_ip
-## [1] &quot;203.0.113.57&quot;
-## 
-## $report$mfa_used
-## [1] &quot;no&quot;
-## 
-## $report$session_window
-## [1] &quot;02:31 to 02:58&quot;
-## 
-## $report$files_downloaded
-## [1] 6
-## 
-## $report$data_downloaded_mb
-## [1] 28.1
-## 
-## $report$highest_risk_file
-## [1] &quot;fsb_shared/research/survey_responses_pii.csv&quot;
-## 
-## $report$files_overwritten
-## [1] 1
-## 
-## 
-## $containment
-## [1] &quot;Disable smithj31 and reset its credentials&quot;                                   
-## [2] &quot;Require MFA on every VPN sign-in&quot;                                             
-## [3] &quot;Notify the owners of the 6 downloaded files, starting with the PII export&quot;    
-## [4] &quot;Block the source address 203.0.113.57 and review sign-ins from outside the US&quot;
-## [5] &quot;Restore fsb_shared/README.txt from version history (overwritten at 02:57)&quot;    
-## 
-## $replay
-## [1] &quot;https://isa401-import-heist.vercel.app/replay&quot;
-## 
-## $message
-## [1] &quot;Incident closed. Open the replay address above in your browser to watch the incident unfold from the two files you imported, then look up: your seat is lit red on the projector board.&quot;</code></pre>
-</div>
-
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkNsYXNzIDA1Ig0KYXV0aG9yOiAiSmVzc2UgUm9zbmVyIg0KZGF0ZTogIjIwMjYtMDktMDkiDQpvdXRwdXQ6IA0KICBodG1sX2RvY3VtZW50Og0KICAgIHRvYzogVFJVRQ0KICAgIHRvY19mbG9hdDogVFJVRQ0KICAgIG51bWJlcmVkLXNlY3Rpb25zOiBUUlVFDQogICAgY29kZV9mb2xkaW5nOiBzaG93DQogICAgY29kZV9kb3dubG9hZDogVFJVRQ0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0KYGBgDQoNCiMjIEZHYW1lIDAxOiBGaW5kIFlvdXIgU2VhdA0KDQpgYGB7ciBnYW1lMDF9DQpjYW1wdXMgPSBqc29ubGl0ZTo6ZnJvbUpTT04oDQogICJodHRwczovL2lzYTQwMS1maW5kLXlvdXItc2VhdC52ZXJjZWwuYXBwL2NhbXB1cy5qc29uIikNCg0KZHBseXI6OmdsaW1wc2UoY2FtcHVzKQ0KDQpmc2IgPSBjYW1wdXNbWyJGYXJtZXIiXV0gIyBjYW1wdXMkRmFybWVyOyBvciBjYW1wdXNbWzVdXQ0KZnNiJGNvZGUNCg0Kc2VjX2Zsb29yID0gZnNiJGZsb29yc1tbJzInXV0NCnNlY19mbG9vciRzZWN0aW9ucw0KDQojZXF1aXZhbGVudA0KZnNiJGZsb29yc1tbM11dJHNlY3Rpb25zDQoNCmRmID0gc2VjX2Zsb29yJHJvb21zDQpkZg0KDQpgYGANCg0KI1JlYWRpbmcgRXhjZWwgRmlsZQ0KYGBge3IgcmVhZF9leGNlbH0NCm9jY3VwYXRpb24gPSByZWFkeGw6OnJlYWRfZXhjZWwoDQogIHBhdGggPSAiTTovSVNBIDQwMS9SZXBvcy9idXNpbmVzc19pbnRlbGxpZ2VuY2UvRGF0YS9vY2N1cGF0aW9uLnhsc3giLCBzaGVldCA9ICJUYWJsZSAxLjQiLCBza2lwID0gMQ0KICApDQoNCg0KI29wdGlvbmFsOiBjbGVhbiB0aGUgYm90dG9tIHRocmVlIHJvd3MNCm9jY3VwYXRpb24gPSBvY2N1cGF0aW9uWzE6MzEsIF0NCmBgYA0KDQoNCg0KI0pzb24gRGF0YQ0KDQpgYGB7ciBqc29uX2RhdGF9DQoNCmpzb25fdXJsID0gImh0dHBzOi8vZGF0YS5jaW5jaW5uYXRpLW9oLmdvdi9yZXNvdXJjZS9ydm10LXBrbXEuanNvbj8kbGltaXQ9MTAwIg0KDQpjcmFzaGVzX2pzb24gPSBqc29ubGl0ZTo6ZnJvbUpTT04oanNvbl91cmwpDQoNCmRwbHlyOjpnbGltcHNlKGNyYXNoZXNfanNvbikNCg0KYGBgDQoNCiMgSW1wb3J0IERhdGEgR2FtZQ0KDQpgYGB7ciBpbXBvcnRfZGF0YV9nYW1lfQ0KbG9naW5zID0gcmVhZHI6OnJlYWRfY3N2KCJodHRwczovL2lzYTQwMS1pbXBvcnQtaGVpc3QudmVyY2VsLmFwcC9hcGkvc3RhZ2UxP3NlYXQ9UjEtMyZzPUEiKQ0KDQpsb2dpbnMkZmFpbGVkX2F0dGVtcHRzDQpsb2dpbnMkYWNjb3VudA0KI0FjY291bnQgd2l0aCBtb3N0IHNpZ24taW5zIGlzIHNtaXRoajMxDQoNCmxvZyA9IGpzb25saXRlOjpmcm9tSlNPTigiaHR0cHM6Ly9pc2E0MDEtaW1wb3J0LWhlaXN0LnZlcmNlbC5hcHAvYXBpL3N0YWdlMj9rZXk9c21pdGhqMzEmc2VhdD1SMS0zJnM9QSIpDQoNCmRwbHlyOjpnbGltcHNlKGxvZykNCg0KbG9nJGV2ZW50cw0KI3RoZXJlIGFyZSA2IGRvd25sb2FkIGV2ZW50cw0KDQpqc29ubGl0ZTo6ZnJvbUpTT04oImh0dHBzOi8vaXNhNDAxLWltcG9ydC1oZWlzdC52ZXJjZWwuYXBwL2FwaS9maW5pc2g/Y29kZT02JnNlYXQ9UjEtMyZzPUEiKQ0KDQpgYGANCg0KDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkNsYXNzIDA2Ig0KYXV0aG9yOiAiSmVzc2UgUm9zbmVyIg0KZGF0ZTogIjIwMjYtMDktMTQiDQpvdXRwdXQ6IA0KICBodG1sX2RvY3VtZW50Og0KICAgIHRvYzogVFJVRQ0KICAgIHRvY19mbG9hdDogVFJVRQ0KICAgIG51bWJlcmVkLXNlY3Rpb25zOiBUUlVFDQogICAgY29kZV9mb2xkaW5nOiBzaG93DQogICAgY29kZV9kb3dubG9hZDogVFJVRQ0KDQoNCi0tLQ0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0NCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCmBgYA0KDQojI2thaG9vdCAwMg0KDQpgYGB7ciBrYWhvb3QgMDJ9DQpydW4gPSByZWFkcjo6cmVhZF9jc3YoDQogICJodHRwczovL2lzYTQwMS1maW5kLXlvdXItc2VhdC52ZXJjZWwuYXBwL2FwaS9leHBvcnQ/c2VjdGlvbj1BJnJ1bj0xMyIpDQpkcGx5cjo6Z2xpbXBzZShydW4pDQpgYGANCg0KYGBge3J9DQpjb24gPSBEQkk6OmRiQ29ubmVjdChSU1FMaXRlOjpTUUxpdGUoKSwNCiAgICAgICAgICAgICAgICAgICAgICJNOi9JU0EgNDAxL1JlcG9zL2J1c2luZXNzX2ludGVsbGlnZW5jZS9EYXRhL3Njb3V0LmRiIikNCkRCSTo6ZGJMaXN0VGFibGVzKGNvbikNCnBvc3RpbmdzID0gREJJOjpkYlJlYWRUYWJsZShjb24sICJzY291dF9wb3N0aW5ncyIpDQpEQkk6OmRiRGlzY29ubmVjdChjb24pDQpkcGx5cjo6Z2xpbXBzZShwb3N0aW5nc1ssIGMoInRpdGxlIiwgImNvbXBhbnkiLA0KICAibG9jYXRpb25fc3RhdGUiLCAicmVtb3RlIiwgInNraWxsc19qc29uIildKQ0KYGBgDQoNCg0K</div>
 
 
 </div>
@@ -1864,7 +1673,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("class05.Rmd");
+  window.initializeSourceEmbed("class06.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
