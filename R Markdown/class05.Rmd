@@ -1,0 +1,86 @@
+---
+title: "Class 05"
+author: "Jesse Rosner"
+date: "2026-09-09"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    numbered-sections: true
+    code_folding: show
+    code_download: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## FGame 01: Find Your Seat
+
+```{r game01}
+campus = jsonlite::fromJSON(
+  "https://isa401-find-your-seat.vercel.app/campus.json")
+
+dplyr::glimpse(campus)
+
+fsb = campus[["Farmer"]] # campus$Farmer; or campus[[5]]
+fsb$code
+
+sec_floor = fsb$floors[['2']]
+sec_floor$sections
+
+#equivalent
+fsb$floors[[3]]$sections
+
+df = sec_floor$rooms
+df
+
+```
+
+#Reading Excel File
+```{r read_excel}
+occupation = readxl::read_excel(
+  path = "M:/ISA 401/Repos/business_intelligence/Data/occupation.xlsx", sheet = "Table 1.4", skip = 1
+  )
+
+
+#optional: clean the bottom three rows
+occupation = occupation[1:31, ]
+```
+
+
+
+#Json Data
+
+```{r json_data}
+
+json_url = "https://data.cincinnati-oh.gov/resource/rvmt-pkmq.json?$limit=100"
+
+crashes_json = jsonlite::fromJSON(json_url)
+
+dplyr::glimpse(crashes_json)
+
+```
+
+# Import Data Game
+
+```{r import_data_game}
+logins = readr::read_csv("https://isa401-import-heist.vercel.app/api/stage1?seat=R1-3&s=A")
+
+logins$failed_attempts
+logins$account
+#Account with most sign-ins is smithj31
+
+log = jsonlite::fromJSON("https://isa401-import-heist.vercel.app/api/stage2?key=smithj31&seat=R1-3&s=A")
+
+dplyr::glimpse(log)
+
+log$events
+#there are 6 download events
+
+jsonlite::fromJSON("https://isa401-import-heist.vercel.app/api/finish?code=6&seat=R1-3&s=A")
+
+```
+
+
+
