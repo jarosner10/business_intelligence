@@ -1,0 +1,65 @@
+---
+title: "Class 07"
+author: "Jesse Rosner"
+date: "2026-09-16"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    number_sections: TRUE
+    code_download: TRUE
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Demo
+```{r demo}
+con = DBI::dbConnect(RSQLite::SQLite(), "../data/scout.db")
+postings = DBI::dbReadTable(con, "scout_postings") |> tibble::as_tibble()
+DBI::dbDisconnect(con)
+ 
+jobs = postings |>
+  dplyr::select(company, title, location_state, remote, category, posted_at, last_seen_at) |>
+  dplyr::mutate(dplyr::across(dplyr::ends_with("_at"), as.Date),
+                days_open = as.numeric(last_seen_at - posted_at))
+
+
+# For Q1, to answer it, we need the following:
+# - number of jobs per category
+# - fraction of those jobs that are remote friendly
+
+jobs |>
+  dplyr::group_by(category) |> 
+  dplyr::summarise(
+    postings = dplyr::n(),  # Counting the number of rows per category
+    remote_share = mean(remote) |> round(3)
+  )
+
+
+# Q2: Among the full time jobs, which state have the highest remote share?
+
+jobs |> 
+  dplyr::filter(category == 'fulltime') |> 
+  dplyr::group_by(location_state) |>
+  dplyr::summarise(
+    postings = dplyr::n(),  # Counting the number of rows per category
+    remote_share = mean(remote) |> round(3)
+  ) |> 
+  dplyr::filter(postings == 'fulltime') |> 
+  dplyr::arrange(dplyr::desc(remote_share))
+  head(3)
+  
+```
+
+# Practice with AirBNB database
+
+```{r}
+
+```
+
+
+
