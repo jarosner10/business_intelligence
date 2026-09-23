@@ -1,28 +1,27 @@
 {
-    "id": "F20F7D9E",
-    "path": "M:/ISA 401/Repos/business_intelligence/R Markdown/class05.Rmd",
-    "project_path": "R Markdown/class05.Rmd",
+    "id": "51BAB7BC",
+    "path": "M:/ISA 401/Repos/business_intelligence/R Markdown/Class08.Rmd",
+    "project_path": "R Markdown/Class08.Rmd",
     "type": "r_markdown",
-    "hash": "688549466",
+    "hash": "892896017",
     "contents": "",
     "dirty": false,
-    "created": 1788957502799.0,
+    "created": 1790166971839.0,
     "source_on_save": false,
     "relative_order": 2,
     "properties": {
         "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "10,23",
-        "scrollLine": "0",
-        "last_setup_crc32": ""
+        "cursorPosition": "81,56",
+        "scrollLine": "66"
     },
     "folds": "",
-    "lastKnownWriteTime": 1789389329,
+    "lastKnownWriteTime": 1790171253,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1789389330470,
+    "last_content_update": 1790171254940,
     "read_only": false,
     "read_only_alternatives": []
 }
