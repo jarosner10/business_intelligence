@@ -1,9 +1,3 @@
-
-library(shiny)
-library(bslib)
-library(DBI)
-library(RSQLite)
-library(ellmer)
 library(querychat)
 
 con = DBI::dbConnect(RSQLite::SQLite(), "data/midwest_airbnb.db")
@@ -13,8 +7,7 @@ client = ellmer::chat_openai(
   params = ellmer::params(reasoning_effort = "none")
 )
 
-
-app = querychat::querychat(
+qc = querychat::querychat(
   con, "listings",
   client             = client,
   tools              = c("filter", "query", "visualize"),
