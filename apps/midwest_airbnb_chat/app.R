@@ -21,6 +21,20 @@ ui = page_sidebar(
   ),
   title = "Midwest Airbnb Intelligence Hub",
   
+  sidebar = sidebar(
+    width = 350,
+    h4("About This App"),
+    p("This application explores 14,887 Airbnb listings across three major Midwest regions from Inside Airbnb snapshots:"),
+    tags$ul(
+      tags$li("Chicago (2026-07-20)"),
+      tags$li("Columbus (2026-07-23)"),
+      tags$li("Twin Cities (2026-07-21)")
+    ),
+    hr(),
+    p(tags$small("Created by Jesse Rosner as part of Business Intelligence coursework."))
+  ),
+)
+
 qc = querychat::querychat(
   con, "listings",
   client             = client,
