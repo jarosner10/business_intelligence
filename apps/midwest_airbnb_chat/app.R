@@ -13,6 +13,14 @@ client = ellmer::chat_openai(
   params = ellmer::params(reasoning_effort = "none")
 )
 
+ui = page_sidebar(
+  theme = bs_theme(
+    version = 5,
+    preset = "flatly",
+    primary = "#2c3e50"
+  ),
+  title = "Midwest Airbnb Intelligence Hub",
+  
 qc = querychat::querychat(
   con, "listings",
   client             = client,
