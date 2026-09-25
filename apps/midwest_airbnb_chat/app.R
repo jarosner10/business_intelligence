@@ -40,7 +40,8 @@ ui = page_sidebar(
 server = function(input, output, session) {
   querychat::querychat_server(
     "qc",
-  con, "listings",
+  con                = con,
+  table              = "listings",
   client             = client,
   tools              = c("filter", "query", "visualize"),
   greeting           = "Ask me about 14,887 Airbnb listings in Chicago, Columbus, and the Twin Cities.",
