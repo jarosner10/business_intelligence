@@ -1,4 +1,9 @@
 # ISA 401 Job Scout Chat: ask questions, get SQL, a table, or a chart back
+library(shiny)
+library(bslib)
+library(DBI)
+library(RSQLite)
+library(ellmer)
 library(querychat)
 
 con = DBI::dbConnect(RSQLite::SQLite(), "data/midwest_airbnb.db")
