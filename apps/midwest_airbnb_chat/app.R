@@ -36,13 +36,11 @@ ui = page_sidebar(
 
   card(
     full_screen = TRUE,
-    querychat::querychat_ui("qc")
+    qc$ui()
   )
 )
   
-server = function(input, output, session) {
-  querychat::querychat_server(
-    "qc",
+qc = QueryChat$new(
   con                = con,
   table              = "listings",
   client             = client,
@@ -51,6 +49,9 @@ server = function(input, output, session) {
   data_description   = "data/data_desc.md",
   extra_instructions = "data/extra_instructions.md"
 )
+
+server = function(input, output, session) {
+  qc$server()
 }
 
 shinyApp(ui, server)
