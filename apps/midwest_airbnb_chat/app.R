@@ -34,7 +34,10 @@ ui = page_sidebar(
     p(tags$small("Created by Jesse Rosner as part of Business Intelligence coursework."))
   ),
 
-  querychat::querychat_ui("qc")
+  card(
+    full_screen = TRUE,
+    querychat::querychat_ui("qc")
+  )
 )
   
 server = function(input, output, session) {
