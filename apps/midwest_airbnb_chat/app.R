@@ -27,7 +27,7 @@ ui = page_sidebar(
   
   card(
     card_header("About"),
-    "Ask questions about 14,887 Airbnb listings in Chicago, Columbus, and the Twin Cities.
+    "This app was created by Jesse Rosner as Business Intelligence coursework. Ask questions about 14,887 Airbnb listings in Chicago, Columbus, and the Twin Cities.
      Data: Inside Airbnb, July 2026. The SQL for each answer is shown below."
   ),
   card(
