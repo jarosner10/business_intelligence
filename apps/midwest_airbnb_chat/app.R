@@ -13,7 +13,8 @@ client = ellmer::chat_openai(
   params = ellmer::params(reasoning_effort = "none")
 )
 
-querychat::querychat(
+
+app = querychat::querychat(
   con, "listings",
   client             = client,
   tools              = c("filter", "query", "visualize"),
