@@ -14,47 +14,17 @@ client = ellmer::chat_openai(
 )
 
 
-qc = QueryChat$new(
+querychat::querychat(
   con                = con,
   table              = "listings",
   client             = client,
   tools              = c("filter", "query", "visualize"),
   greeting           = "Ask me about 14,887 Airbnb listings in Chicago, Columbus, and the Twin Cities.",
   data_description   = "data/data_desc.md",
-  extra_instructions = "data/extra_instructions.md"
-)
-
-
-ui = page_sidebar(
-  theme = bs_theme(
+  extra_instructions = "data/extra_instructions.md",
+  theme              = bs_theme(
     version = 5,
-    preset = "flatly",
+    preset  = "flatly",
     primary = "#2c3e50"
-  ),
-  title = "Midwest Airbnb Intelligence Hub",
-  
-  sidebar = sidebar(
-    width = 350,
-    h4("About This App"),
-    p("This application explores 14,887 Airbnb listings across three major Midwest regions from Inside Airbnb snapshots:"),
-    tags$ul(
-      tags$li("Chicago (2026-07-20)"),
-      tags$li("Columbus (2026-07-23)"),
-      tags$li("Twin Cities (2026-07-21)")
-    ),
-    hr(),
-    p(tags$small("Created by Jesse Rosner as part of Business Intelligence coursework."))
-  ),
-  
-  card(
-    full_screen = TRUE,
-    qc$ui()
   )
 )
-
-
-server = function(input, output, session) {
-  qc$server()
-}
-
-shinyApp(ui, server)
