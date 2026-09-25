@@ -33,7 +33,10 @@ ui = page_sidebar(
     hr(),
     p(tags$small("Created by Jesse Rosner as part of Business Intelligence coursework."))
   ),
+
+  querychat::querychat_ui("qc")
 )
+  
 server = function(input, output, session) {
   querychat::querychat_server(
     "qc",
