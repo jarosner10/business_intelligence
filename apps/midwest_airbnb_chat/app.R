@@ -1,4 +1,4 @@
-# ISA 401 Job Scout Chat: ask questions, get SQL, a table, or a chart back
+
 library(shiny)
 library(bslib)
 library(DBI)
@@ -12,6 +12,18 @@ client = ellmer::chat_openai(
   model  = "gpt-5.6-luna",
   params = ellmer::params(reasoning_effort = "none")
 )
+
+
+qc = QueryChat$new(
+  con                = con,
+  table              = "listings",
+  client             = client,
+  tools              = c("filter", "query", "visualize"),
+  greeting           = "Ask me about 14,887 Airbnb listings in Chicago, Columbus, and the Twin Cities.",
+  data_description   = "data/data_desc.md",
+  extra_instructions = "data/extra_instructions.md"
+)
+
 
 ui = page_sidebar(
   theme = bs_theme(
@@ -33,22 +45,13 @@ ui = page_sidebar(
     hr(),
     p(tags$small("Created by Jesse Rosner as part of Business Intelligence coursework."))
   ),
-
+  
   card(
     full_screen = TRUE,
     qc$ui()
   )
 )
-  
-qc = QueryChat$new(
-  con                = con,
-  table              = "listings",
-  client             = client,
-  tools              = c("filter", "query", "visualize"),
-  greeting           = "Ask me about 14,887 Airbnb listings in Chicago, Columbus, and the Twin Cities.",
-  data_description   = "data/data_desc.md",
-  extra_instructions = "data/extra_instructions.md"
-)
+
 
 server = function(input, output, session) {
   qc$server()
