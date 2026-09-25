@@ -4,7 +4,17 @@
 
 A twelve-line [querychat](https://github.com/posit-dev/querychat) app built in ISA 401 (Miami University) on the job postings that [ChatISA](https://chatisa.fsb.miamioh.edu) Job Scout collected. It is the starting point for Assignment 05, where you rebuild it on the Airbnb data, deploy it to [Render](https://render.com) from your GitHub repository, and then improve it.
 
-**Live app:** ('https://midwest-airbnb-chat-d4dw.onrender.com/')
+**Live app:** https://midwest-airbnb-chat-d4dw.onrender.com
+
+---
+
+### Questions asked through the app on Render
+ 
+#1. What neighborhood in Columbus has the most expensive full homes?
+
+#2. Do Superhosts charge more per night that regular hosts?
+
+#3. How many listings could host 15 people?
 
 ---
 
