@@ -11,10 +11,14 @@ A twelve-line [querychat](https://github.com/posit-dev/querychat) app built in I
 ### Questions asked through the app on Render
  
 #1. What neighborhood in Columbus has the most expensive full homes?
+![Answer Q1](Screenshots\Q1.png)
 
 #2. Do Superhosts charge more per night that regular hosts?
+![Answer Q2](Screenshots\Q2.png)
+
 
 #3. How many listings could host 15 people?
+![Answer Q3](Screenshots\Q3.png)
 
 ---
 
