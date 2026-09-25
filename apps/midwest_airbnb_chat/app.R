@@ -34,8 +34,9 @@ ui = page_sidebar(
     p(tags$small("Created by Jesse Rosner as part of Business Intelligence coursework."))
   ),
 )
-
-qc = querychat::querychat(
+server = function(input, output, session) {
+  querychat::querychat_server(
+    "qc",
   con, "listings",
   client             = client,
   tools              = c("filter", "query", "visualize"),
@@ -43,3 +44,6 @@ qc = querychat::querychat(
   data_description   = "data/data_desc.md",
   extra_instructions = "data/extra_instructions.md"
 )
+}
+
+shinyApp(ui, server)
