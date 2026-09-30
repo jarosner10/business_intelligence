@@ -1,0 +1,48 @@
+---
+title: "Class 11"
+author: "Jesse Rosner"
+date: "2026-09-30"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    numbered-sections: TRUE
+    code_folding: show
+    code_download: TRUE
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+dept_abbr = c('acc', 'bus', 'isa', 'mkt')
+
+courses_df = data.frame()
+for (dept_name in dept_abbr) {
+  cat(rep("-", 25))
+  print(dept_name)
+  dept_url = paste0(
+    "https//bulletin.miamioh.edu/courses-instruction/", dept_name, "/")
+  
+  webpage = rvest::read.html(dept_url)
+  
+  webpage |> rvest::html_elemtns("strong")
+  )
+}
+```
+
+
+
+### Scarping Plane Crash Data
+we will use 'purrr' based on a class vote.
+```{r PlanData}
+
+year = 2026
+plane_url = paste0("https://planecrashinfo.com/", year, "/", year, ".htm")
+
+webpage = rvest::read_html(plane_url)
+webpage |> rvest::html_element("table") |> rvest::html_table()
+```
+
