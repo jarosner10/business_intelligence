@@ -1,0 +1,32 @@
+---
+title: "Class 12"
+author: "Jesse Rosner"
+date: "2026-10-05"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    numbered-sections: TRUE
+    code_folding: show
+    code_download: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Practice Task
+```{r practice_scrape}
+page = rvest::read_html("https://isa401-salvage.vercel.app/registry?start=1")
+classes = page |>
+  rvest::html_elements("ship-class Dreadnought") |>
+  rvest::html_text2()
+length(classes)   # check this first: one per card
+```
+
+
+
+
+```{r}
+
+```
