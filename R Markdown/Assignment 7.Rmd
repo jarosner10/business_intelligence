@@ -1,0 +1,93 @@
+---
+title: "Assignment 07"
+author: "Jesse"
+date: "2026-10-06"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    numbered-sections: TRUE
+    code_folding: show
+    code_download: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+###Figuring out details by running scrape on one department (ACC)
+```{r acc_df_test}
+robotstxt::paths_allowed(paths = "/fsb/directory/", domain = "miamioh.edu", bot = "*")
+
+acc_url = "https://miamioh.edu/fsb/directory/?up=/query/all/all/Accountancy/all"
+acc_page = rvest::read_html(acc_url)
+acc_page |> rvest::html_elements("table a") -> acc_links
+length(acc_links)
+
+acc_links |> rvest::html_text2() -> acc_names
+acc_links |> rvest::html_attr("href") -> acc_sites
+
+acc_names
+acc_sites
+
+acc_page |> rvest::html_elements("table i") -> acc_positions
+length(acc_positions)
+
+acc_page |> rvest::html_elements("table i") |> rvest::html_text2() -> acc_positions
+
+length(acc_names)
+length(acc_sites)
+length(acc_positions)
+
+acc_df = data.frame(
+  department = "Accountancy",
+  name = acc_names,
+  position = acc_positions,
+  website = acc_sites
+)
+
+head(acc_df)
+```
+
+###Creating the whole webscrape using a function and a singular data frame
+```{r Scrape}
+scrape_fsb = function(dept_slug, dept_label){
+  
+  dept_url = paste0(
+    "https://miamioh.edu/fsb/directory/?up=/query/all/all/", dept_slug, "/all"
+  )
+  
+  webpage = rvest::read_html(dept_url)
+  
+  webpage |> rvest::html_elements("table a") -> person_links
+  person_links |> rvest::html_text2() -> faculty_names
+  person_links |> rvest::html_attr("href") -> faculty_sites
+  
+  webpage |> rvest::html_elements("table i") |> rvest::html_text2() -> faculty_positions
+  
+  df = data.frame(
+    department = dept_label,
+    name = faculty_names,
+    position = faculty_positions,
+    website = faculty_sites
+  
+  )
+  
+  return(df)
+  
+}
+
+
+dept_slugs = c("Accountancy", "Economics", "Entrepreneurship", "Finance", "Information_Systems_and_Analytics", "Marketing", "Management")
+
+dept_labels = c("Accountancy", "Economics", "Entrepreneurship", "Finance", "Information Systems and Analytics", "Marketing", "Management")
+
+fsb_df = purrr::map2_df(.x = dept_slugs, .y = dept_labels, .f = scrape_fsb)
+
+head(fsb_df)
+
+
+```
+
+
