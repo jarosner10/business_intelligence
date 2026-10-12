@@ -1,1 +1,0 @@
-{"frames":[{"func":"DBI::dbDisconnect(con)","file":"","line_number":0,"end_line_number":0,"character_number":0,"end_character_number":0}],"message":"Error in h(simpleError(msg, call)) : \n  error in evaluating the argument 'conn' in selecting a method for function 'dbDisconnect': object 'con' not found\n"}
