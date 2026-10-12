@@ -1,0 +1,43 @@
+---
+title: "Class 13"
+author: "Jesse Rosner"
+date: "2026-10-07"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    numbered-sections: TRUE
+    code_folding: show
+    code_download: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r courses50}
+chat = ellmer::chat_openai(
+  model = "gpt-5.6-luna",
+  params = ellmer::params(reasoning_effort = "none")
+)
+
+course_list = rvest::read_html("https://bulletin.miamioh.edu/courses-instruction/isa/") |> 
+  rvest::html_elements(".courseblock") |> 
+  rvest::html_text2() |> 
+  as.list()
+```
+
+
+
+### Tidy
+```{r tidy}
+year = 2025
+
+crash_url = paste0("https://planecrashinfo.com", year, '/', year, '.htm')
+
+crash_page <- rvest::read_html(crash_url, encoding = "ISO-8859-1")
+
+crash_page |> 
+  rvest::html_elements()
+```
+
