@@ -1,0 +1,64 @@
+---
+title: "Practice"
+author: "Jesse"
+date: "2026-10-08"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    numbered-sections: TRUE
+    code_folding: show
+    code_download: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Connecting to miami policies
+```{r policies_scraping}
+robotstxt::paths_allowed(paths = "/policy-library/students/undergraduate/academic-regulations/", domain = "miamioh.edu", bot = '*')
+
+policy_url = "https://miamioh.edu/policy-library/students/undergraduate/academic-regulations/"
+
+policy = rvest::read_html(policy_url)
+policy |> rvest::html_elements("a.news-lockup__body-link") -> links
+length(links)
+links |> rvest::html_attr("href") -> policy_sites
+
+list = (policy_sites)
+typeof(list)
+```
+
+
+### Scraping swim team website
+```{r swim_scrape}
+robotstxt::paths_allowed(paths = "/sports/swimming-and-diving/roster#women", domain = "miamiredhawks.com", bot = "*")
+
+swim_url = "https://miamiredhawks.com/sports/swimming-and-diving/roster#women"
+
+swim = rvest::read_html(swim_url)
+
+section <- swim |> rvest::html_element("")
+
+swim |> rvest::html_elements("a h3") |> rvest::html_text2() -> swim_names
+
+swim |> rvest::html_elements("div span.items-center") |> rvest::html_text2() -> swim_locations
+
+swim_names
+swim_locations
+
+df = data.frame(
+  Name = swim_names,
+  Location = swim_locations
+)
+```
+
+
+### Using robotstxt to see if we can scrape
+```{r allowed_to_scrape?}
+robotstxt::paths_allowed(paths = "/wiki/Miami_University", domain = "en.wikipedia.org", bot = "*")
+
+```
+
+
